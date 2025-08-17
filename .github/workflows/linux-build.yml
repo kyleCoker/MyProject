@@ -1,0 +1,29 @@
+name: Linux Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install build tools
+      run: |
+        sudo apt update
+        sudo apt install -y build-essential cmake
+
+    - name: Configure
+      run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+    - name: Build
+      run: cmake --build build --config Release
+
+    - name: Run (optional)
+      run: |
+        cd build
+        ./myprog || true
